@@ -5,9 +5,12 @@
 </p>
 
 <p align="center">
+  <a href="https://whynowlab.github.io/pulser/">Website</a> ·
+  <a href="https://www.npmjs.com/package/pulser-cli">npm</a> ·
+  <a href="./README.ko.md">한국어</a>
+  <br><br>
   <a href="https://www.npmjs.com/package/pulser-cli"><img src="https://img.shields.io/npm/v/pulser-cli?color=10b981" alt="npm"></a>
   <a href="https://github.com/whynowlab/pulser/blob/main/LICENSE"><img src="https://img.shields.io/github/license/whynowlab/pulser?cacheSeconds=0" alt="license"></a>
-  <a href="./README.ko.md">한국어</a>
 </p>
 
 "Check my skills." Diagnose, classify, prescribe, and fix — without leaving the conversation.
