@@ -72,16 +72,9 @@
 
     <!-- ========== Hero ========== -->
     <section class="relative overflow-hidden py-20 sm:py-24 md:py-32">
-      <!-- Waveform Background -->
-      <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-        <!-- ECG waveform (green, faster) -->
-        <div id="wave-ecg" class="absolute top-0 left-0 h-full" style="width:200%;opacity:0.18">
-          <svg id="wave-ecg-svg" class="w-full h-full" viewBox="0 0 2400 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
-        </div>
-        <!-- EtCO2 / Capnography waveform (cyan, slower) -->
-        <div id="wave-capno" class="absolute top-0 left-0 h-full" style="width:200%;opacity:0.22">
-          <svg id="wave-capno-svg" class="w-full h-full" viewBox="0 0 2400 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
-        </div>
+      <!-- Waveform Background (Canvas — works on all browsers) -->
+      <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <canvas id="wave-canvas" class="w-full h-full" style="opacity:0.22"></canvas>
       </div>
 
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
@@ -281,64 +274,71 @@
   </footer>
 
   <script>
-  // --- Waveform generation ---
+  // --- Canvas waveform animation ---
   (function() {
-    var ns = 'http://www.w3.org/2000/svg';
-
-    function ecgPath(cycles, y) {
-      var d = 'M0,' + y;
-      for (var i = 0; i < cycles; i++) {
-        var o = i * 150;
-        d += ' L'+(o+55)+','+y+' L'+(o+62)+','+(y-8)+' L'+(o+66)+','+y;
-        d += ' L'+(o+72)+','+y+' L'+(o+74)+','+(y+4)+' L'+(o+76)+','+(y-55)+' L'+(o+78)+','+(y+30)+' L'+(o+80)+','+y;
-        d += ' L'+(o+100)+','+y+' L'+(o+108)+','+(y-15)+' L'+(o+118)+','+y+' L'+(o+150)+','+y;
-      }
-      return d;
-    }
-
-    function capnoPath(cycles, y) {
-      var d = 'M0,' + y;
-      for (var i = 0; i < cycles; i++) {
-        var o = i * 150;
-        d += ' L'+(o+30)+','+y+' L'+(o+36)+','+(y-40)+' L'+(o+75)+','+(y-44)+' L'+(o+80)+','+y+' L'+(o+150)+','+y;
-      }
-      return d;
-    }
-
-    function makePath(svgId, d, color) {
-      var svg = document.getElementById(svgId);
-      if (!svg) return;
-      var p = document.createElementNS(ns, 'path');
-      p.setAttribute('d', d);
-      p.setAttribute('stroke', color);
-      p.setAttribute('stroke-width', '2');
-      p.setAttribute('fill', 'none');
-      p.setAttribute('vector-effect', 'non-scaling-stroke');
-      svg.appendChild(p);
-    }
-
-    makePath('wave-ecg-svg', ecgPath(16, 100), '#10b981');
-    makePath('wave-capno-svg', capnoPath(16, 100), '#06b6d4');
-
-    // --- requestAnimationFrame animation (Safari-safe) ---
+    var canvas = document.getElementById('wave-canvas');
+    if (!canvas) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    var ecgEl = document.getElementById('wave-ecg');
-    var capEl = document.getElementById('wave-capno');
-    if (!ecgEl || !capEl) return;
+    var ctx = canvas.getContext('2d');
+    var dpr = window.devicePixelRatio || 1;
+    var ecgOff = 0, capOff = 0;
 
-    var ecgX = 0, capX = 0, last = 0;
-    function tick(now) {
-      if (!last) last = now;
-      var dt = (now - last) / 1000;
-      last = now;
-      var reset = ecgEl.parentElement.offsetWidth;
-      ecgX -= 130 * dt;
-      capX -= 75 * dt;
-      if (ecgX <= -reset) ecgX += reset;
-      if (capX <= -reset) capX += reset;
-      ecgEl.style.transform = 'translate3d(' + ecgX + 'px,0,0)';
-      capEl.style.transform = 'translate3d(' + capX + 'px,0,0)';
+    function resize() {
+      var rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+      canvas.style.width = rect.width + 'px';
+      canvas.style.height = rect.height + 'px';
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function drawWave(yBase, offset, period, color, shapeFn) {
+      var w = canvas.width / dpr;
+      ctx.beginPath();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      for (var x = 0; x <= w; x += 1) {
+        var t = (((x + offset) % period) + period) % period;
+        var y = yBase + shapeFn(t);
+        x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+
+    function ecgShape(t) {
+      if (t > 55 && t < 66) { // P wave
+        return -10 * Math.sin((t - 55) / 11 * Math.PI);
+      }
+      if (t >= 72 && t < 76) { // QRS up
+        return 5 - 65 * Math.sin((t - 72) / 4 * Math.PI);
+      }
+      if (t >= 76 && t < 80) { // QRS down
+        return 35 * (1 - (t - 76) / 4);
+      }
+      if (t >= 100 && t < 115) { // T wave
+        return -18 * Math.sin((t - 100) / 15 * Math.PI);
+      }
+      return 0;
+    }
+
+    function capnoShape(t) {
+      if (t >= 30 && t < 38) return -45 * ((t - 30) / 8); // rise
+      if (t >= 38 && t < 72) return -45 - 5 * ((t - 38) / 34); // plateau
+      if (t >= 72 && t < 78) return (-50) * (1 - (t - 72) / 6); // drop
+      return 0;
+    }
+
+    function tick() {
+      var w = canvas.width / dpr;
+      var h = canvas.height / dpr;
+      ctx.clearRect(0, 0, w, h);
+      ecgOff += 1.8;
+      capOff += 0.9;
+      drawWave(h * 0.38, ecgOff, 150, '#10b981', ecgShape);
+      drawWave(h * 0.72, capOff, 150, '#06b6d4', capnoShape);
       requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
