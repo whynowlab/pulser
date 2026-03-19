@@ -1,6 +1,6 @@
 {
   "name": "pulser-cli",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Diagnose and fix your Claude Code skills — based on Anthropic's internal principles",
   "type": "module",
   "bin": {

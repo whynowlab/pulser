@@ -9,7 +9,7 @@ import chalk from "chalk";
 import { PatientMonitor } from "./monitor/tui.js";
 import { previewFixes, applyFixes } from "./fixer.js";
 import { restoreBackup, listBackups } from "./backup.js";
-import type { CLIOptions, ScanResult, SkillReport, OutputFormat } from "./types.js";
+import type { CLIOptions, ScanResult, SkillReport, ParsedSkill, OutputFormat } from "./types.js";
 
 const VALID_FORMATS: OutputFormat[] = ["text", "json", "md"];
 
@@ -164,53 +164,109 @@ async function run(options: CLIOptions) {
     console.log("");
   }
 
-  console.log(report(result, options.format));
-
-  // Phase 6: --fix auto-apply
-  if (options.fix && options.format === "text") {
-    const allRx = [
-      ...reports.flatMap((r) => r.prescriptions),
-      ...systemPrescriptions,
-    ];
-
-    const { fixable, manual } = previewFixes(allRx, skills);
-
-    if (fixable.length > 0) {
-      console.log("");
-      console.log(chalk.yellow(`  ${fixable.length} auto-fixable prescriptions found.`));
-      console.log(chalk.dim("  Applying fixes with backup..."));
-      console.log("");
-
-      const results = applyFixes(fixable, skills, expandHome(options.path));
-      const applied = results.filter((r) => r.applied);
-
-      for (const r of results) {
-        const icon = r.applied ? chalk.green("\u2713") : chalk.red("\u2717");
-        console.log(`  ${icon} ${r.skillName} [${r.rule}]`);
-        if (r.diff && r.diff !== "no change") {
-          for (const line of r.diff.split("\n")) {
-            if (line.startsWith("+")) {
-              console.log(chalk.green(`      ${line}`));
-            } else if (line.startsWith("-")) {
-              console.log(chalk.red(`      ${line}`));
-            }
-          }
-        }
-      }
-
-      console.log("");
-      console.log(`  ${chalk.green(`${applied.length} fixes applied`)}. Run ${chalk.cyan("npx pulser undo")} to rollback.`);
-    }
-
-    if (manual.length > 0) {
-      console.log("");
-      console.log(chalk.dim(`  ${manual.length} prescriptions require manual changes (see report above).`));
-    }
+  // Non-text formats: dump and exit
+  if (options.format !== "text") {
+    console.log(report(result, options.format, true));
+    if (result.summary.errors > 0) process.exit(1);
+    return;
   }
 
-  // Exit code
+  // Text format: summary first
+  console.log(report(result, options.format, options.detail));
+
+  // If --detail or --fix passed via CLI flags, skip interactive prompt
+  if (options.detail || options.fix) {
+    if (options.fix) {
+      await runFix(result, skills, options);
+    }
+    if (result.summary.errors > 0) process.exit(1);
+    if (options.strict && result.summary.warnings > 0) process.exit(2);
+    return;
+  }
+
+  // No issues? Done.
+  if (result.summary.warnings === 0 && result.summary.errors === 0) {
+    return;
+  }
+
+  // Interactive prompt
+  console.log("");
+  console.log(chalk.dim("  What would you like to do?"));
+  console.log("");
+  console.log(`  ${chalk.cyan("1")}  View full diagnostic report`);
+  console.log(`  ${chalk.cyan("2")}  Auto-fix issues (with backup)`);
+  console.log(`  ${chalk.cyan("3")}  Save report to file`);
+  console.log(`  ${chalk.cyan("q")}  Exit`);
+  console.log("");
+
+  const answer = await prompt("  > ");
+
+  switch (answer.trim()) {
+    case "1":
+      console.log("");
+      console.log(report(result, "text", true));
+      break;
+    case "2":
+      await runFix(result, skills, options);
+      break;
+    case "3": {
+      const reportPath = "pulser-report.md";
+      const { writeFileSync } = await import("fs");
+      writeFileSync(reportPath, report(result, "md", true));
+      console.log(chalk.green(`  Report saved to ${reportPath}`));
+      break;
+    }
+    case "q":
+    default:
+      break;
+  }
+
   if (result.summary.errors > 0) process.exit(1);
   if (options.strict && result.summary.warnings > 0) process.exit(2);
+}
+
+function prompt(question: string): Promise<string> {
+  const { createInterface } = require("readline");
+  const rl = createInterface({ input: process.stdin, output: process.stdout });
+  return new Promise((resolve) => {
+    rl.question(question, (answer: string) => {
+      rl.close();
+      resolve(answer);
+    });
+  });
+}
+
+async function runFix(result: ScanResult, skills: ParsedSkill[], options: CLIOptions) {
+  const allRx = [
+    ...result.skills.flatMap((r) => r.prescriptions),
+    ...result.systemPrescriptions,
+  ];
+
+  const { fixable, manual } = previewFixes(allRx, skills);
+
+  if (fixable.length > 0) {
+    console.log("");
+    console.log(chalk.yellow(`  ${fixable.length} auto-fixable prescriptions found.`));
+    console.log(chalk.dim("  Applying fixes with backup..."));
+    console.log("");
+
+    const results = applyFixes(fixable, skills, expandHome(options.path));
+    const applied = results.filter((r) => r.applied);
+
+    for (const r of results) {
+      const icon = r.applied ? chalk.green("\u2713") : chalk.red("\u2717");
+      console.log(`  ${icon} ${r.skillName} [${r.rule}]`);
+    }
+
+    console.log("");
+    console.log(`  ${chalk.green(`${applied.length} fixes applied`)}. Run ${chalk.cyan("pulser undo")} to rollback.`);
+  } else {
+    console.log(chalk.dim("  No auto-fixable issues found."));
+  }
+
+  if (manual.length > 0) {
+    console.log(chalk.dim(`  ${manual.length} prescriptions require manual changes.`));
+  }
 }
 
 const program = new Command();
