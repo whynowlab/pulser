@@ -93,4 +93,5 @@ export interface CLIOptions {
   strict: boolean;
   all: boolean;
   fix: boolean;
+  detail: boolean;
 }

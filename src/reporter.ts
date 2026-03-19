@@ -146,10 +146,55 @@ export function reportMarkdown(result: ScanResult): string {
   return lines.join("\n");
 }
 
-export function report(result: ScanResult, format: OutputFormat): string {
+export function reportSummary(result: ScanResult): string {
+  const parts: string[] = [];
+  const s = result.summary;
+
+  const scoreColor = s.score >= 80 ? chalk.green : s.score >= 50 ? chalk.yellow : chalk.red;
+
+  parts.push(`  ${s.total} skills scanned`);
+  parts.push(
+    `  ${chalk.green(`\u2713 ${s.healthy} healthy`)}  ` +
+    `${chalk.yellow(`\u26A0 ${s.warnings} warnings`)}  ` +
+    `${chalk.red(`\u2717 ${s.errors} errors`)}`
+  );
+  parts.push(`  Score: ${scoreColor(String(s.score))}/100`);
+  parts.push("");
+
+  // Top issues only (max 5)
+  const issues = result.skills
+    .filter((r) => !r.healthy)
+    .sort((a, b) => b.diagnostics.length - a.diagnostics.length)
+    .slice(0, 5);
+
+  if (issues.length > 0) {
+    parts.push(chalk.dim("  Top issues:"));
+    for (const r of issues) {
+      const errCount = r.diagnostics.filter((d) => d.severity === "error").length;
+      const warnCount = r.diagnostics.filter((d) => d.severity === "warning").length;
+      const counts = [
+        errCount > 0 ? chalk.red(`${errCount} error`) : "",
+        warnCount > 0 ? chalk.yellow(`${warnCount} warn`) : "",
+      ].filter(Boolean).join(", ");
+      parts.push(`    ${r.skill.dirName} ${chalk.dim("—")} ${counts}`);
+    }
+    const remaining = result.skills.filter((r) => !r.healthy).length - 5;
+    if (remaining > 0) {
+      parts.push(chalk.dim(`    ...and ${remaining} more`));
+    }
+  }
+
+  parts.push("");
+  parts.push(chalk.dim("  Run with --detail for full report"));
+  parts.push(chalk.dim("  Run with --skill <name> for single skill"));
+
+  return parts.join("\n");
+}
+
+export function report(result: ScanResult, format: OutputFormat, detail = false): string {
   switch (format) {
     case "json": return reportJson(result);
     case "md": return reportMarkdown(result);
-    default: return reportText(result);
+    default: return detail ? reportText(result) : reportSummary(result);
   }
 }

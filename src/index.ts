@@ -224,6 +224,7 @@ program
   .option("--format <type>", "Output format: text, json, md", "text")
   .addHelpText("after", "\nFormats: text (default), json (CI), md (reports)")
   .option("--no-anim", "Disable TUI animation")
+  .option("--detail", "Show full diagnostic report (default: summary only)")
   .option("--fix", "Auto-apply structural fixes (with backup)")
   .option("--strict", "Treat warnings as errors")
   .option("--all", "Include experimental rules")
@@ -241,6 +242,7 @@ program
       strict: opts.strict || false,
       all: opts.all || false,
       fix: opts.fix || false,
+      detail: opts.detail || !!opts.skill,
     });
   });
 
