@@ -1,6 +1,8 @@
 # pulser
 
-> Diagnose. Prescribe. Fix.
+<p align="center">
+  <img src="docs/banner.svg" alt="pulser — Diagnose. Prescribe. Fix." width="100%">
+</p>
 
 **'스킬 점검해줘' 한 마디.** Claude Code 대화 안에서 진단, 분류, 처방, 수정까지 끝납니다.
 
