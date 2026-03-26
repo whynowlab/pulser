@@ -6,6 +6,13 @@
   "bin": {
     "pulser": "./dist/index.js"
   },
+  "files": [
+    "dist/",
+    "scripts/",
+    "skill/",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
