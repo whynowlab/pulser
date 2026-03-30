@@ -26,8 +26,19 @@
     "cli",
     "anthropic"
   ],
-  "author": "whynowlab",
+  "author": "TheStack-ai",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TheStack-ai/pulser.git"
+  },
+  "homepage": "https://whynowlab.github.io/pulser/",
+  "bugs": {
+    "url": "https://github.com/TheStack-ai/pulser/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
     "boxen": "^8.0.1",
     "chalk": "^5.6.2",

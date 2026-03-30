@@ -9,8 +9,11 @@
   <a href="https://www.npmjs.com/package/pulser-cli">npm</a> ·
   <a href="./README.ko.md">한국어</a>
   <br><br>
+  <a href="https://github.com/TheStack-ai/pulser/actions/workflows/ci.yml"><img src="https://github.com/TheStack-ai/pulser/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://www.npmjs.com/package/pulser-cli"><img src="https://img.shields.io/npm/v/pulser-cli?color=10b981" alt="npm"></a>
-  <a href="https://github.com/whynowlab/pulser/blob/main/LICENSE"><img src="https://img.shields.io/github/license/whynowlab/pulser?cacheSeconds=0" alt="license"></a>
+  <a href="https://www.npmjs.com/package/pulser-cli"><img src="https://img.shields.io/npm/dm/pulser-cli?color=06b6d4" alt="downloads"></a>
+  <a href="https://github.com/TheStack-ai/pulser/blob/main/LICENSE"><img src="https://img.shields.io/github/license/TheStack-ai/pulser" alt="license"></a>
+  <a href="https://github.com/TheStack-ai/pulser"><img src="https://img.shields.io/github/stars/TheStack-ai/pulser?style=social" alt="stars"></a>
   <a href="https://github.com/rohitg00/awesome-claude-code-toolkit"><img src="https://awesome.re/mentioned-badge.svg" alt="Mentioned in Awesome Claude Code Toolkit"></a>
 </p>
 
@@ -183,4 +186,4 @@ Disable with `--no-anim` or pipe to a file.
 
 ## License
 
-MIT — [whynowlab](https://github.com/whynowlab)
+MIT — [TheStack-ai](https://github.com/TheStack-ai)

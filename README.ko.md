@@ -5,8 +5,13 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/TheStack-ai/pulser/actions/workflows/ci.yml"><img src="https://github.com/TheStack-ai/pulser/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://www.npmjs.com/package/pulser-cli"><img src="https://img.shields.io/npm/v/pulser-cli?color=10b981" alt="npm"></a>
-  <a href="https://github.com/whynowlab/pulser/blob/main/LICENSE"><img src="https://img.shields.io/github/license/whynowlab/pulser?cacheSeconds=0" alt="license"></a>
+  <a href="https://www.npmjs.com/package/pulser-cli"><img src="https://img.shields.io/npm/dm/pulser-cli?color=06b6d4" alt="downloads"></a>
+  <a href="https://github.com/TheStack-ai/pulser/blob/main/LICENSE"><img src="https://img.shields.io/github/license/TheStack-ai/pulser" alt="license"></a>
+  <a href="https://github.com/TheStack-ai/pulser"><img src="https://img.shields.io/github/stars/TheStack-ai/pulser?style=social" alt="stars"></a>
+  <a href="https://github.com/rohitg00/awesome-claude-code-toolkit"><img src="https://awesome.re/mentioned-badge.svg" alt="Mentioned in Awesome Claude Code Toolkit"></a>
+  <br>
   <a href="./README.md">English</a>
 </p>
 
@@ -179,4 +184,4 @@ TTY 터미널에서 실행하면 병원 환자 모니터 스타일의 실시간 
 
 ## 라이선스
 
-MIT — [whynowlab](https://github.com/whynowlab)
+MIT — [TheStack-ai](https://github.com/TheStack-ai)

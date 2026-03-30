@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a0a0a"/>
+      <stop offset="100%" stop-color="#111111"/>
+    </linearGradient>
+    <linearGradient id="greenGlow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#10b981" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="cyanGlow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#06b6d4" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" rx="0" fill="url(#bg)"/>
+
+  <!-- Subtle grid -->
+  <g opacity="0.04" stroke="#10b981">
+    <line x1="0" y1="157" x2="1200" y2="157"/>
+    <line x1="0" y1="315" x2="1200" y2="315"/>
+    <line x1="0" y1="473" x2="1200" y2="473"/>
+    <line x1="300" y1="0" x2="300" y2="630"/>
+    <line x1="600" y1="0" x2="600" y2="630"/>
+    <line x1="900" y1="0" x2="900" y2="630"/>
+  </g>
+
+  <!-- ECG waveform top -->
+  <path d="M0,180 L120,180 L150,180 L160,140 L170,220 L180,100 L190,260 L200,180 L220,180 L360,180 L390,180 L400,140 L410,220 L420,100 L430,260 L440,180 L460,180 L600,180 L630,180 L640,140 L650,220 L660,100 L670,260 L680,180 L700,180 L840,180 L870,180 L880,140 L890,220 L900,100 L910,260 L920,180 L940,180 L1080,180 L1110,180 L1120,140 L1130,220 L1140,100 L1150,260 L1160,180 L1200,180"
+        fill="none" stroke="#10b981" stroke-width="2" opacity="0.2"/>
+
+  <!-- Capnography waveform bottom -->
+  <path d="M0,470 L80,470 L90,420 L180,420 L190,470 L320,470 L330,420 L420,420 L430,470 L560,470 L570,420 L660,420 L670,470 L800,470 L810,420 L900,420 L910,470 L1040,470 L1050,420 L1140,420 L1150,470 L1200,470"
+        fill="none" stroke="#06b6d4" stroke-width="2" opacity="0.15"/>
+
+  <!-- Glow lines -->
+  <rect x="0" y="178" width="1200" height="4" fill="url(#greenGlow)"/>
+  <rect x="0" y="468" width="1200" height="4" fill="url(#cyanGlow)"/>
+
+  <!-- Main title -->
+  <text x="600" y="300" text-anchor="middle" font-family="'SF Mono', 'Fira Code', 'Cascadia Code', monospace" font-size="72" font-weight="bold" fill="#f8fafc" letter-spacing="8">pulser</text>
+
+  <!-- Tagline -->
+  <text x="600" y="355" text-anchor="middle" font-family="'SF Mono', 'Fira Code', 'Cascadia Code', monospace" font-size="22" fill="#06b6d4" letter-spacing="4">Diagnose. Prescribe. Fix.</text>
+
+  <!-- Subtitle -->
+  <text x="600" y="400" text-anchor="middle" font-family="-apple-system, 'Segoe UI', sans-serif" font-size="16" fill="#6b7280" letter-spacing="2">Claude Code Skill Diagnostic CLI</text>
+
+  <!-- Corner decorations -->
+  <rect x="30" y="30" width="40" height="2" fill="#10b981" opacity="0.4"/>
+  <rect x="30" y="30" width="2" height="40" fill="#10b981" opacity="0.4"/>
+  <rect x="1130" y="30" width="40" height="2" fill="#10b981" opacity="0.4"/>
+  <rect x="1168" y="30" width="2" height="40" fill="#10b981" opacity="0.4"/>
+  <rect x="30" y="598" width="40" height="2" fill="#06b6d4" opacity="0.4"/>
+  <rect x="30" y="560" width="2" height="40" fill="#06b6d4" opacity="0.4"/>
+  <rect x="1130" y="598" width="40" height="2" fill="#06b6d4" opacity="0.4"/>
+  <rect x="1168" y="560" width="2" height="40" fill="#06b6d4" opacity="0.4"/>
+
+  <!-- Stats bar -->
+  <text x="600" y="550" text-anchor="middle" font-family="'SF Mono', monospace" font-size="14" fill="#4b5563" letter-spacing="3">npm install -g pulser-cli</text>
+</svg>
