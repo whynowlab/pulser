@@ -15,6 +15,7 @@
   <a href="https://github.com/TheStack-ai/pulser/blob/main/LICENSE"><img src="https://img.shields.io/github/license/TheStack-ai/pulser" alt="license"></a>
   <a href="https://github.com/TheStack-ai/pulser"><img src="https://img.shields.io/github/stars/TheStack-ai/pulser?style=social" alt="stars"></a>
   <a href="https://github.com/rohitg00/awesome-claude-code-toolkit"><img src="https://awesome.re/mentioned-badge.svg" alt="Mentioned in Awesome Claude Code Toolkit"></a>
+  <a href="https://github.com/marketplace/actions/pulser-claude-code-skill-linter"><img src="https://img.shields.io/badge/Marketplace-Pulser-10b981?logo=github" alt="GitHub Marketplace"></a>
 </p>
 
 "Check my skills." Diagnose, classify, prescribe, and fix — without leaving the conversation.
@@ -187,3 +188,9 @@ Disable with `--no-anim` or pipe to a file.
 ## License
 
 MIT — [TheStack-ai](https://github.com/TheStack-ai)
+
+## Featured in
+
+- [GitHub Marketplace — Pulser Action](https://github.com/marketplace/actions/pulser-claude-code-skill-linter)
+- [Awesome Claude Code Toolkit](https://github.com/rohitg00/awesome-claude-code-toolkit)
+- [Anthropic Plugin Directory](https://platform.claude.com) *(under review)*

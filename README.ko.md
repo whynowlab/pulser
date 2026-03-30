@@ -11,6 +11,7 @@
   <a href="https://github.com/TheStack-ai/pulser/blob/main/LICENSE"><img src="https://img.shields.io/github/license/TheStack-ai/pulser" alt="license"></a>
   <a href="https://github.com/TheStack-ai/pulser"><img src="https://img.shields.io/github/stars/TheStack-ai/pulser?style=social" alt="stars"></a>
   <a href="https://github.com/rohitg00/awesome-claude-code-toolkit"><img src="https://awesome.re/mentioned-badge.svg" alt="Mentioned in Awesome Claude Code Toolkit"></a>
+  <a href="https://github.com/marketplace/actions/pulser-claude-code-skill-linter"><img src="https://img.shields.io/badge/Marketplace-Pulser-10b981?logo=github" alt="GitHub Marketplace"></a>
   <br>
   <a href="./README.md">English</a>
 </p>
@@ -185,3 +186,9 @@ TTY 터미널에서 실행하면 병원 환자 모니터 스타일의 실시간 
 ## 라이선스
 
 MIT — [TheStack-ai](https://github.com/TheStack-ai)
+
+## 등재 현황
+
+- [GitHub Marketplace — Pulser Action](https://github.com/marketplace/actions/pulser-claude-code-skill-linter)
+- [Awesome Claude Code Toolkit](https://github.com/rohitg00/awesome-claude-code-toolkit)
+- [Anthropic Plugin Directory](https://platform.claude.com) *(심사 중)*
